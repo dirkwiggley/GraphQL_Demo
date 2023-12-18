@@ -26,7 +26,10 @@
     "@apollo/server": "^4.9.5",
     "@graphql-tools/mock": "^9.0.0",
     "@graphql-tools/schema": "^10.0.2",
+    "firebase": "^10.7.1",
+    "firebase-admin": "^12.0.0",
     "graphql": "^16.8.1",
+    "graphql-express": "^2.0.8",
     "graphql-tag": "^2.12.6"
   }
 }

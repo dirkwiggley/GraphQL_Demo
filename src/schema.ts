@@ -2,8 +2,8 @@ import gql from "graphql-tag";
 
 export const typeDefs = gql`
   type Query {
-    "Get all users"
     users: [User!]!
+    user(id: ID!): User
     videos: [Video!]!
     videoList: [VideoList]
     videoInList: [VideoInList]
@@ -13,6 +13,7 @@ export const typeDefs = gql`
     id: Int!
     login: String!
     nickname: String!
+    videoList: VideoList
   }
 
   type Video {
