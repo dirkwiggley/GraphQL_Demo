@@ -1,15 +1,16 @@
 import { RESTDataSource } from '@apollo/datasource-rest';
 
 class VideoAPI extends RESTDataSource {
-  baseURL = "http://localhost:8800/";
+  baseURL = "https://graphql-test-34dd7-default-rtdb.firebaseio.com/"
 
   getVideos() {
-    return this.get("videos");
+    return this.get("videos.json");
   }
 
   getVideo(id: number) {
-    return this.get(`videos/id/${id}`);
+    return this.get(`videos/${id}.json`);
   }
 }
 
 export default VideoAPI;
+

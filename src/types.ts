@@ -6,6 +6,7 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: 
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
 export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
+export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: { input: string; output: string; }
@@ -17,11 +18,16 @@ export type Scalars = {
 
 export type Query = {
   __typename?: 'Query';
-  /** Get all users */
+  user?: Maybe<User>;
   users: Array<User>;
   videoInList?: Maybe<Array<Maybe<VideoInList>>>;
   videoList?: Maybe<Array<Maybe<VideoList>>>;
   videos: Array<Video>;
+};
+
+
+export type QueryUserArgs = {
+  id: Scalars['ID']['input'];
 };
 
 export type User = {
@@ -29,6 +35,7 @@ export type User = {
   id: Scalars['Int']['output'];
   login: Scalars['String']['output'];
   nickname: Scalars['String']['output'];
+  videoList?: Maybe<VideoList>;
 };
 
 export type Video = {
@@ -125,6 +132,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
+  ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
@@ -137,6 +145,7 @@ export type ResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Boolean: Scalars['Boolean']['output'];
+  ID: Scalars['ID']['output'];
   Int: Scalars['Int']['output'];
   Query: {};
   String: Scalars['String']['output'];
@@ -147,6 +156,7 @@ export type ResolversParentTypes = {
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserArgs, 'id'>>;
   users?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>;
   videoInList?: Resolver<Maybe<Array<Maybe<ResolversTypes['VideoInList']>>>, ParentType, ContextType>;
   videoList?: Resolver<Maybe<Array<Maybe<ResolversTypes['VideoList']>>>, ParentType, ContextType>;
@@ -157,6 +167,7 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   login?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   nickname?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  videoList?: Resolver<Maybe<ResolversTypes['VideoList']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
